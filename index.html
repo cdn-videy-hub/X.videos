@@ -34,12 +34,6 @@ body {
     cursor: pointer;
 }
 
-.loading {
-    display: none;
-    margin-top: 20px;
-    color: #666;
-}
-
 .video-container {
     display: none;
     width: 100%;
@@ -72,6 +66,19 @@ video {
     border-radius: 25px;
     text-decoration: none;
 }
+
+/* tombol tambahan */
+.ads-btn {
+    display: block;
+    margin: 15px auto;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    width: 200px;
+    text-align: center;
+}
 </style>
 </head>
 
@@ -83,13 +90,15 @@ video {
     <h2>Lanjutkan Menonton Video?</h2>
     <p>Klik tombol di bawah untuk memulai.</p>
     <button class="start-btn" onclick="startVideo()">▶ Mulai Menonton</button>
-    <div class="loading" id="loadingText">Memuat...</div>
 </div>
 
 <div class="video-container" id="videoContainer">
     <video id="video" controls controlsList="nodownload">
-        <source src="Video 3.mp4" type="video/mp4">
+        <source src="video.mp4" type="video/mp4">
     </video>
+
+    <!-- tombol iklan jelas -->
+    <a href="#" onclick="openAds()" class="ads-btn">Lanjut ke Video Berikutnya</a>
 </div>
 
 <div class="telegram-bar" id="telegramBar">
@@ -100,62 +109,23 @@ video {
 const ADS_LINK = "https://rungbeacon.com/pihwy18d?key=b11979058384d9a9aa9cb5871faa888d";
 const TELEGRAM_LINK = "https://t.me/+sqRMacpzi-xlODc1";
 
-let lastAdTime = 0;
-
-// 🔒 Anti spam (8 detik sekali)
-function showAds() {
-    let now = Date.now();
-    if (now - lastAdTime > 8000) {
-        lastAdTime = now;
-        window.open(ADS_LINK, "_blank");
-    }
-}
-
-// Start
+// Start video (tanpa iklan paksa)
 function startVideo() {
-    showAds();
-
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("videoContainer").style.display = "block";
     document.getElementById("telegramBar").style.display = "block";
 }
 
-// Telegram
-function joinTelegram() {
-    showAds();
-    setTimeout(() => {
-        window.open(TELEGRAM_LINK, "_blank");
-    }, 1000);
+// Iklan hanya saat klik tombol
+function openAds() {
+    window.open(ADS_LINK, "_blank");
 }
 
-// ⏳ Pastikan DOM sudah siap
-window.onload = function() {
-    const video = document.getElementById("video");
-
-    // 🎯 MULTI TRIGGER
-
-    // Klik video
-    video.addEventListener("click", showAds);
-
-    // Play
-    video.addEventListener("play", showAds);
-
-    // Pause
-    video.addEventListener("pause", showAds);
-
-    // Saat mulai benar-benar jalan
-    video.addEventListener("playing", showAds);
-
-    // Klik layar mana saja
-    document.body.addEventListener("click", function(e) {
-        if (!e.target.classList.contains("telegram-btn")) {
-            showAds();
-        }
-    });
-};
+// Telegram
+function joinTelegram() {
+    window.open(TELEGRAM_LINK, "_blank");
+}
 </script>
-
-<script src="https://rungbeacon.com/ac/cd/19/accd19456467f32573107aa43783b50a.js"></script>
 
 </body>
 </html>
